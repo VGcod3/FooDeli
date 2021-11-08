@@ -30,7 +30,7 @@ const partners = () => {
 
       localStorage.setItem("restaurant", JSON.stringify(item))
 
-      window.location.href = '/restaurant.html'
+      window.location.href = 'restaurant.html'
       console.log(localStorage.getItem('restaurant'));
     })
     cardsRestaurants.append(a)
