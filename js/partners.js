@@ -1,5 +1,6 @@
 const partners = () => {
   const cardsRestaurants = document.querySelector('.cards-restaurants')
+ 
 
   const renderCard = (item) => {
     const a = document.createElement('a')
@@ -35,7 +36,6 @@ const partners = () => {
     })
     cardsRestaurants.append(a)
   }
-
 
   fetch(`https://foodeli-e9cf4-default-rtdb.europe-west1.firebasedatabase.app/db/partners.json`)
     .then(response => response.json())

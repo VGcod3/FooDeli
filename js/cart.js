@@ -4,6 +4,8 @@ const cart = () => {
   const cartCross = modalCart.querySelector('.close')
   const body = modalCart.querySelector('.modal-body')
   const buttonSend = modalCart.querySelector('.button-primary')
+  const clearCart = modalCart.querySelector('.clear-cart')
+
 
   buttonCart.addEventListener("click", (e) => {
     openCart()
@@ -39,6 +41,16 @@ const cart = () => {
     }
   })
 
+  clearCart.addEventListener('click', (e) => {
+    e.preventDefault()
+
+    closeCart()
+    localStorage.removeItem('cart')
+    body.innerHTML = '';
+
+
+  })
+
   buttonSend.addEventListener('click', (e) => {
     const cartArray = JSON.parse(localStorage.getItem('cart'))
 
@@ -51,6 +63,7 @@ const cart = () => {
           closeCart()
 
           localStorage.removeItem('cart')
+          body.innerHTML = '';
         }
       })
       .catch(e => {
