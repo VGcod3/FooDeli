@@ -1,10 +1,20 @@
-const promoJS = () => {
+function promoJS() {
   const containerPromo = document.querySelector('.container-promo')
 
+  try {
+    fetch(`https://foodeli-e9cf4-default-rtdb.europe-west1.firebasedatabase.app/db/containerPromoContent.json`)
+      .then(response => response.json())
+      .then(data => {
+        try {
+          renderPromo(data)
+        } catch (error) {
+        }
 
-  fetch(`https://foodeli-e9cf4-default-rtdb.europe-west1.firebasedatabase.app/db/containerPromoContent.json`)
-    .then(response => response.json())
-    .then(data => renderPromo(data))
+      })
+  } catch (error) {
+    console.error(error)
+  }
+
 
   function renderPromo(data) {
     const promocard = document.createElement('section')
@@ -12,7 +22,6 @@ const promoJS = () => {
     let rEl = randomElement(data)
     promocard.classList.add(`${rEl}`)
     promocard.innerHTML = data[rEl]
-    console.log(promocard);
     containerPromo.append(promocard)
   }
 
@@ -25,4 +34,4 @@ const promoJS = () => {
 
 }
 
-promoJS()
+export default promoJS

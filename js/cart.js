@@ -53,22 +53,22 @@ const cart = () => {
 
   buttonSend.addEventListener('click', (e) => {
     const cartArray = JSON.parse(localStorage.getItem('cart'))
-
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST',
-      body: cartArray
-    })
-      .then(response => {
-        if (response.ok) {
-          closeCart()
-
-          localStorage.removeItem('cart')
-          body.innerHTML = '';
-        }
+    try {
+      fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        body: cartArray
       })
-      .catch(e => {
-        console.error(e)
-      })
+        .then(response => {
+          if (response.ok) {
+            closeCart()
+
+            localStorage.removeItem('cart')
+            body.innerHTML = '';
+          }
+        })
+    } catch (error) {
+      console.error(e)
+    }
 
   })
 
@@ -133,4 +133,4 @@ const cart = () => {
   }
 }
 
-cart()
+export default cart

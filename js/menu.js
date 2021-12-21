@@ -73,10 +73,22 @@ const menu = () => {
 
     changeTitle(restaurant)
 
-    fetch(`https://foodeli-e9cf4-default-rtdb.europe-west1.firebasedatabase.app/db/${restaurant.products}`)
-      .then(response => response.json())
-      .then(response => response.forEach(data => renderCard(data)))
-      .catch(error => console.error(error))
+    try {
+      fetch(`https://foodeli-e9cf4-default-rtdb.europe-west1.firebasedatabase.app/db/${restaurant.products}`)
+        .then(response => response.json())
+        .then(response => response.forEach(data => {
+          try {
+
+          } catch (error) {
+
+          }
+          renderCard(data)
+        }))
+    } catch (error) {
+      console.error(error)
+    }
+
+
   } else {
     window.location.href = '/';
   }
