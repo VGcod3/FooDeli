@@ -36,6 +36,7 @@ const partners = () => {
     })
     cardsRestaurants.append(a)
   }
+
   try {
     fetch(`https://foodeli-e9cf4-default-rtdb.europe-west1.firebasedatabase.app/db/partners.json`)
       .then(response => response.json())
@@ -49,7 +50,6 @@ const partners = () => {
   } catch (error) {
     console.error(error)
   }
-
 
 }
 

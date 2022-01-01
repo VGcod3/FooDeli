@@ -44,6 +44,8 @@
 
 			</section>
 
+
+
 			<section class="restaurants">
 				<div class="section-heading">
 					<h2 class="section-title">Рестораны</h2>
@@ -51,6 +53,7 @@
 						<input type="text" class="input input-search" placeholder="Поиск блюд и ресторанов" />
 					</label>
 				</div>
+
 				<div class="cards cards-restaurants">
 
 				</div>
@@ -112,11 +115,11 @@
 					<legend class="modal-title">Авторизация</legend>
 					<label class="label-auth">
 						<span>Логин</span>
-						<input id="login" type="text">
+						<input required id="login" type="text">
 					</label>
 					<label class="label-auth">
 						<span>Пароль</span>
-						<input id="password" type="password">
+						<input required pattern=".{8,}" id="password" type="password">
 					</label>
 				</fieldset>
 				<!-- /.modal-body -->

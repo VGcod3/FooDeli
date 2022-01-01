@@ -59,7 +59,6 @@ const auth = () => {
   })
 
 
-
   function openLogin() {
     modalAuth.style.display = 'flex'
   }

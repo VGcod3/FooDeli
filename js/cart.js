@@ -5,7 +5,7 @@ const cart = () => {
   const body = modalCart.querySelector('.modal-body')
   const buttonSend = modalCart.querySelector('.button-primary')
   const clearCart = modalCart.querySelector('.clear-cart')
-
+  const modalPriceTag = modalCart.querySelector('.modal-pricetag')
 
   buttonCart.addEventListener("click", (e) => {
     openCart()
@@ -47,12 +47,13 @@ const cart = () => {
     closeCart()
     localStorage.removeItem('cart')
     body.innerHTML = '';
-
+    renderTotalPrice()
 
   })
 
   buttonSend.addEventListener('click', (e) => {
-    const cartArray = JSON.parse(localStorage.getItem('cart'))
+    let cartArray = JSON.parse(localStorage.getItem('cart'))
+
     try {
       fetch('https://jsonplaceholder.typicode.com/posts', {
         method: 'POST',
@@ -62,7 +63,6 @@ const cart = () => {
           if (response.ok) {
             closeCart()
 
-            localStorage.removeItem('cart')
             body.innerHTML = '';
           }
         })
@@ -70,46 +70,64 @@ const cart = () => {
       console.error(e)
     }
 
+    localStorage.removeItem('cart')
+    renderTotalPrice()
+
   })
 
   function openCart() {
+    disableScroll()
+
+    renderTotalPrice()
+
     modalCart.classList.add('is-open')
+
   }
 
   function closeCart() {
     modalCart.classList.remove('is-open')
+
+    renderTotalPrice()
+
+    enableScroll()
   }
 
-  function incremetnCount(item) {
+  function incremetnCount(itemId) {
     const cartArray = JSON.parse(localStorage.getItem('cart'))
 
-    cartArray.map(el => {
-
-
-      if (el.id == item) {
-        el.count++
+    cartArray.forEach(el => {
+      if (el.id == itemId) {
+        el.count++;
       }
-      return el
     })
-    renderItems(cartArray)
 
     localStorage.setItem('cart', JSON.stringify(cartArray))
+
+    renderTotalPrice()
+
+    renderItems(cartArray)
+
+    cartArray.splice(0, 0, cartArray.length)
   }
 
-  function decrementCount(item) {
-    const cartArray = JSON.parse(localStorage.getItem('cart'))
+  function decrementCount(itemId) {
+    let cartArray = JSON.parse(localStorage.getItem('cart'))
 
-    cartArray.map(el => {
-
-      if (el.id == item) {
+    cartArray.forEach(el => {
+      if (el.id == itemId) {
         el.count = el.count > 0 ? el.count - 1 : 0;
       }
-      return el
     })
-
-    renderItems(cartArray)
+    cartArray = cartArray.filter(item => item.count > 0);
 
     localStorage.setItem('cart', JSON.stringify(cartArray))
+
+    if (cartArray.length == 0) {
+      localStorage.removeItem('cart')
+    }
+    renderTotalPrice()
+
+    renderItems(cartArray)
   }
 
   function renderItems(data) {
@@ -129,6 +147,41 @@ const cart = () => {
 						<span class="counter">${item.count}</span>
 						<button class="counter-button btn-inc" data-index="${item.id}"> + </button>`
       body.append(row)
+    })
+
+    renderTotalPrice()
+  }
+
+  function renderTotalPrice() {
+    if (localStorage.getItem('cart')) {
+      modalPriceTag.innerText = JSON.parse(localStorage.getItem('cart'))
+        .map(el => el.price * el.count)
+        .reduce((acc, curr) => acc + curr, 0) + '₽'
+    }
+
+    if (!localStorage.getItem('cart')) modalPriceTag.innerText = 'The cart is empty'
+  }
+
+  function disableScroll() {
+    const widthScroll = window.innerWidth - document.body.offsetWidth;
+
+    document.body.dbScrollY = window.scrollY
+    document.body.style.cssText = `
+		position: fixed;
+		top: ${-window.scrollY}px;
+		width: 100%;
+		height: 100vh;
+		overflow: hidden;
+		padding-right: ${widthScroll}px;
+	`
+
+    modalCart.style.overflow = ''
+  }
+
+  function enableScroll() {
+    document.body.style.cssText = '';
+    window.scroll({
+      top: document.body.dbScrollY
     })
   }
 }
